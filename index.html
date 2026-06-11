@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obliq Ai Project Gallery</title>
+  <style>
+    :root {
+      --ink: #172032;
+      --muted: #5d677b;
+      --line: rgba(29, 41, 67, 0.13);
+      --glass: rgba(255, 255, 255, 0.72);
+      --white: #ffffff;
+      --cyan: #35d8d0;
+      --lime: #b7f35a;
+      --coral: #ff7e67;
+      --amber: #ffc857;
+      --violet: #9a7bff;
+      --sky: #5ea8ff;
+      --shadow: 0 22px 70px rgba(38, 57, 90, 0.16);
+      --shadow-soft: 0 10px 26px rgba(38, 57, 90, 0.11);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 7% 8%, rgba(53, 216, 208, 0.32), transparent 28rem),
+        radial-gradient(circle at 86% 4%, rgba(255, 200, 87, 0.34), transparent 26rem),
+        radial-gradient(circle at 65% 62%, rgba(255, 126, 103, 0.16), transparent 28rem),
+        linear-gradient(135deg, #f9fcff 0%, #f2fff8 42%, #fff8f0 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.45;
+      background-image:
+        linear-gradient(rgba(29, 41, 67, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29, 41, 67, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 78%);
+      z-index: -3;
+    }
+
+    .neural-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.52;
+      z-index: -2;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 0;
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-logo {
+      width: clamp(92px, 9vw, 112px);
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      box-shadow: 0 8px 20px rgba(38, 57, 90, 0.1);
+    }
+
+    .brand span {
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ghost-link,
+    .solid-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: 0 8px 20px rgba(38, 57, 90, 0.08);
+    }
+
+    .solid-link {
+      color: #10202c;
+      border: none;
+      background: linear-gradient(135deg, var(--lime), var(--cyan) 56%, #8de5ff);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+      align-items: center;
+      gap: clamp(34px, 6vw, 72px);
+      min-height: 650px;
+      padding: 50px 0 82px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      border: 1px solid rgba(53, 216, 208, 0.34);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #145f65;
+      background: rgba(255, 255, 255, 0.68);
+      font-size: 0.77rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 22px 0 20px;
+      font-size: clamp(3.45rem, 6.6vw, 6.65rem);
+      line-height: 0.9;
+      letter-spacing: 0;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(120deg, #0e9f98, #6a55ff 37%, #ff7e67 72%, #e1a700);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 590px;
+      margin-top: 34px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .orbital-stage {
+      min-height: 440px;
+      position: relative;
+      perspective: 900px;
+    }
+
+    .orbital-stage::before {
+      content: "";
+      position: absolute;
+      inset: 62px 22px 20px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.1) 48%, transparent 70%);
+      filter: blur(1px);
+      transform: rotateX(68deg);
+      animation: pulseField 7s ease-in-out infinite;
+    }
+
+    .core {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      width: 210px;
+      height: 210px;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%) rotateX(61deg) rotateZ(-25deg);
+      animation: spinCore 14s linear infinite;
+    }
+
+    .ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(23, 32, 50, 0.12);
+    }
+
+    .ring:nth-child(1) {
+      border-top-color: var(--cyan);
+      box-shadow: 0 0 38px rgba(53, 216, 208, 0.26);
+    }
+
+    .ring:nth-child(2) {
+      transform: rotateX(76deg);
+      border-right-color: var(--coral);
+    }
+
+    .ring:nth-child(3) {
+      transform: rotateY(70deg);
+      border-bottom-color: var(--amber);
+    }
+
+    .node {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: 0 0 0 6px rgba(53, 216, 208, 0.14), 0 0 28px rgba(53, 216, 208, 0.44);
+    }
+
+    .node:nth-child(4) {
+      top: -8px;
+      left: 50%;
+      background: var(--cyan);
+    }
+
+    .node:nth-child(5) {
+      bottom: 18px;
+      left: 8px;
+      background: var(--coral);
+    }
+
+    .node:nth-child(6) {
+      right: 10px;
+      top: 62%;
+      background: var(--amber);
+    }
+
+    .holo-panel {
+      position: absolute;
+      right: 0;
+      bottom: 16px;
+      width: 255px;
+      border: 1px solid rgba(255, 255, 255, 0.74);
+      border-radius: 8px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+      transform: rotateY(-14deg) rotateX(8deg);
+      backdrop-filter: blur(18px);
+      animation: hoverPanel 6s ease-in-out infinite;
+    }
+
+    .signal-bars {
+      display: flex;
+      align-items: end;
+      gap: 7px;
+      height: 76px;
+      margin-top: 18px;
+    }
+
+    .signal-bars span {
+      flex: 1;
+      border-radius: 6px 6px 2px 2px;
+      background: linear-gradient(to top, var(--cyan), var(--lime));
+      animation: equalize 1.8s ease-in-out infinite;
+    }
+
+    .signal-bars span:nth-child(2) {
+      animation-delay: -0.7s;
+      background: linear-gradient(to top, var(--coral), var(--amber));
+    }
+
+    .signal-bars span:nth-child(3) {
+      animation-delay: -1.2s;
+      background: linear-gradient(to top, var(--sky), var(--violet));
+    }
+
+    .signal-bars span:nth-child(4) {
+      animation-delay: -0.3s;
+      background: linear-gradient(to top, var(--amber), var(--lime));
+    }
+
+    .holo-panel p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 22px;
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 650px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(230px, 370px) minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin: 0 0 24px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px);
+    }
+
+    .search {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid rgba(29, 41, 67, 0.13);
+      border-radius: 8px;
+      padding: 0 15px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.84);
+      font: inherit;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: rgba(53, 216, 208, 0.72);
+      box-shadow: 0 0 0 4px rgba(53, 216, 208, 0.16);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .filter-button {
+      min-height: 40px;
+      border: 1px solid rgba(29, 41, 67, 0.13);
+      border-radius: 8px;
+      padding: 0 12px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.66);
+      font: inherit;
+      font-size: 0.86rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms ease, color 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .filter-button:hover,
+    .filter-button.active {
+      color: #103038;
+      border-color: rgba(53, 216, 208, 0.62);
+      background: linear-gradient(135deg, rgba(183, 243, 90, 0.72), rgba(53, 216, 208, 0.55));
+      transform: translateY(-1px);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      padding: 8px 0 88px;
+    }
+
+    .project-card {
+      position: relative;
+      min-width: 0;
+      border: 1px solid rgba(29, 41, 67, 0.13);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow-soft);
+      transform-style: preserve-3d;
+      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+      animation: cardIn 520ms ease both;
+    }
+
+    .project-card:hover {
+      border-color: rgba(53, 216, 208, 0.58);
+      box-shadow: var(--shadow);
+      transform: translateY(-6px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    }
+
+    .preview {
+      position: relative;
+      height: 210px;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, var(--accent-a), var(--accent-b)),
+        linear-gradient(45deg, rgba(255, 255, 255, 0.38), transparent);
+      isolation: isolate;
+    }
+
+    .preview::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.56);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.32) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.24) 1px, transparent 1px);
+      background-size: 26px 26px;
+      opacity: 0.78;
+      z-index: 0;
+      transform: perspective(600px) rotateX(64deg) translateY(52px);
+      transform-origin: bottom;
+    }
+
+    .preview::after {
+      content: attr(data-initial);
+      position: absolute;
+      left: 22px;
+      bottom: 18px;
+      z-index: 1;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 4.7rem;
+      font-weight: 900;
+      line-height: 0.8;
+      text-shadow: 0 12px 34px rgba(0, 0, 0, 0.2);
+    }
+
+    .preview iframe {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 1440px;
+      height: 920px;
+      border: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.155);
+      transform-origin: center;
+      opacity: 0.92;
+      filter: saturate(1.08) contrast(1.02);
+      z-index: 2;
+    }
+
+    .preview-shine {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background:
+        linear-gradient(115deg, transparent 0 38%, rgba(255, 255, 255, 0.54) 48%, transparent 58%),
+        linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.36));
+      transform: translateX(-90%);
+      animation: shine 7s ease-in-out infinite;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .card-topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--accent-a);
+      box-shadow: 0 0 0 5px rgba(53, 216, 208, 0.16);
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-a), transparent 78%);
+    }
+
+    .project-card h3 {
+      min-height: 2.44em;
+      margin: 12px 0 8px;
+      font-size: 1.24rem;
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    .project-card p {
+      min-height: 4.85em;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-height: 64px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      align-self: flex-start;
+      border: 1px solid rgba(29, 41, 67, 0.11);
+      border-radius: 8px;
+      padding: 6px 8px;
+      color: #2e485c;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(29, 41, 67, 0.09);
+    }
+
+    .domain {
+      min-width: 0;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 0.77rem;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .launch {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      color: #10202c;
+      text-decoration: none;
+      font-size: 1.15rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+      box-shadow: 0 9px 24px rgba(53, 216, 208, 0.18);
+      box-shadow: 0 9px 24px color-mix(in srgb, var(--accent-a), transparent 72%);
+      transition: transform 180ms ease;
+    }
+
+    .launch:hover {
+      transform: translate(2px, -2px);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .empty-state {
+      display: none;
+      grid-column: 1 / -1;
+      border: 1px dashed rgba(29, 41, 67, 0.2);
+      border-radius: 8px;
+      padding: 28px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .empty-state.show {
+      display: block;
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 30px 0 38px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.38);
+    }
+
+    .footer .shell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    @keyframes spinCore {
+      to {
+        transform: translate(-50%, -50%) rotateX(61deg) rotateZ(335deg);
+      }
+    }
+
+    @keyframes pulseField {
+      50% {
+        transform: rotateX(68deg) scale(1.05);
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes hoverPanel {
+      50% {
+        transform: translateY(-12px) rotateY(-10deg) rotateX(8deg);
+      }
+    }
+
+    @keyframes equalize {
+      0%,
+      100% {
+        height: 34%;
+      }
+      50% {
+        height: 94%;
+      }
+    }
+
+    @keyframes shine {
+      0%,
+      46% {
+        transform: translateX(-95%);
+      }
+      60%,
+      100% {
+        transform: translateX(95%);
+      }
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-top: 36px;
+      }
+
+      .orbital-stage {
+        min-height: 340px;
+      }
+
+      .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .topbar,
+      .section-head,
+      .controls,
+      .footer .shell {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-actions {
+        justify-content: stretch;
+      }
+
+      .ghost-link,
+      .solid-link {
+        flex: 1;
+      }
+
+      h1 {
+        font-size: 3.15rem;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        display: grid;
+      }
+
+      .filters {
+        justify-content: flex-start;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        height: 200px;
+      }
+
+      .orbital-stage {
+        min-height: 300px;
+      }
+
+      .core {
+        width: 172px;
+        height: 172px;
+      }
+
+      .holo-panel {
+        right: 50%;
+        width: min(255px, 88vw);
+        transform: translateX(50%) rotateY(-11deg) rotateX(8deg);
+      }
+
+      @keyframes hoverPanel {
+        50% {
+          transform: translateX(50%) translateY(-10px) rotateY(-8deg) rotateX(8deg);
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="neural-canvas" id="neuralCanvas" aria-hidden="true"></canvas>
+
+  <header class="shell topbar">
+    <a class="brand" href="#top" aria-label="Obliq Ai home">
+      <img class="brand-logo" src="1778696711188.jpg" alt="Obliq Ai logo" />
+    </a>
+    <nav class="nav-actions" aria-label="Primary">
+      <a class="ghost-link" href="#projects">Projects</a>
+      <a class="solid-link" href="#projects">Explore Gallery</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="shell hero" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">Future labs project gallery</div>
+        <h1 id="hero-title">Obliq Ai <span class="gradient-text">showcase grid</span></h1>
+        <p class="hero-copy">
+          A clean, futuristic gallery for your live experiments, creative AI tools, vision projects,
+          games, environment builds, and 3D experiences. Every card opens the deployed project and
+          carries a live preview panel for fast scanning.
+        </p>
+        <div class="hero-metrics" aria-label="Gallery metrics">
+          <div class="metric">
+            <strong id="projectCount">15</strong>
+            <span>Live projects</span>
+          </div>
+          <div class="metric">
+            <strong>6</strong>
+            <span>Creative tracks</span>
+          </div>
+          <div class="metric">
+            <strong>3D</strong>
+            <span>Animated interface</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="orbital-stage" aria-hidden="true">
+        <div class="core">
+          <span class="ring"></span>
+          <span class="ring"></span>
+          <span class="ring"></span>
+          <span class="node"></span>
+          <span class="node"></span>
+          <span class="node"></span>
+        </div>
+        <div class="holo-panel">
+          <p>Portfolio signal</p>
+          <div class="signal-bars">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell" id="projects" aria-labelledby="projects-title">
+      <div class="section-head">
+        <div>
+          <h2 id="projects-title">Project Gallery</h2>
+          <p>
+            Browse the complete Obliq Ai collection. Use the filters to jump between AI,
+            vision, games, environment, 3D, and mobility focused builds.
+          </p>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Project filters">
+        <input class="search" id="searchInput" type="search" placeholder="Search projects" aria-label="Search projects" />
+        <div class="filters" id="filters" aria-label="Categories"></div>
+      </div>
+
+      <div class="gallery" id="gallery" aria-live="polite">
+        <div class="empty-state" id="emptyState">No projects match that search.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <span>Obliq Ai Project Gallery</span>
+      <span>Designed as a single HTML showcase</span>
+    </div>
+  </footer>
+
+  <script>
+    const projects = [
+      {
+        title: "Bollywood Fashion",
+        category: "Creative AI",
+        url: "https://bollywoodfashion.vercel.app/",
+        description: "A style-forward fashion experience blending Bollywood aesthetics with AI-powered visual presentation.",
+        tags: ["Fashion", "AI", "Style"],
+        accent: ["#ff7e67", "#ffc857"]
+      },
+      {
+        title: "X-Ray Vision",
+        category: "Vision",
+        url: "https://x-ray-vision-main.vercel.app/",
+        description: "A computer vision inspired interface for seeing hidden structure and presenting analysis with clarity.",
+        tags: ["Vision", "Detection", "Interactive"],
+        accent: ["#35d8d0", "#5ea8ff"]
+      },
+      {
+        title: "AirDraw Pink",
+        category: "Creative AI",
+        url: "https://airdraw-pink.vercel.app/",
+        description: "A gesture-led drawing surface made for expressive sketches, quick creative play, and motion input.",
+        tags: ["Drawing", "Gestures", "Canvas"],
+        accent: ["#ff8dcc", "#9a7bff"]
+      },
+      {
+        title: "Smart Presenter",
+        category: "Productivity",
+        url: "https://smart-presenter-seven.vercel.app/",
+        description: "A modern presenter utility shaped for sharper communication, clean delivery, and confident demos.",
+        tags: ["Slides", "Assistant", "Presentation"],
+        accent: ["#5ea8ff", "#b7f35a"]
+      },
+      {
+        title: "Air Canvas",
+        category: "Creative AI",
+        url: "https://air-canvas-two.vercel.app/",
+        description: "A virtual canvas concept that turns movement into digital marks for hands-free creative control.",
+        tags: ["Canvas", "Motion", "Creative"],
+        accent: ["#35d8d0", "#b7f35a"]
+      },
+      {
+        title: "Machine Vision",
+        category: "Vision",
+        url: "https://machinevision-orcin.vercel.app/",
+        description: "A machine vision showcase for real-time recognition patterns, detection flows, and visual intelligence.",
+        tags: ["Machine Vision", "Recognition", "AI"],
+        accent: ["#9a7bff", "#35d8d0"]
+      },
+      {
+        title: "Congo",
+        category: "Interactive",
+        url: "https://congo-teal.vercel.app/",
+        description: "A compact interactive web build with bold visual energy and quick launch access from the gallery.",
+        tags: ["Interactive", "Web App", "Experience"],
+        accent: ["#10bfae", "#ffc857"]
+      },
+      {
+        title: "Fruit Ninja",
+        category: "Games",
+        url: "https://fruit-ninja-pi.vercel.app/",
+        description: "A browser game experience inspired by fast slicing action, playful scoring, and arcade motion.",
+        tags: ["Game", "Arcade", "Motion"],
+        accent: ["#ff7e67", "#b7f35a"]
+      },
+      {
+        title: "Environment",
+        category: "Environment",
+        url: "https://environment-six.vercel.app/",
+        description: "An environment themed web experience for sustainability storytelling and ecological awareness.",
+        tags: ["Eco", "Awareness", "Nature"],
+        accent: ["#7adf88", "#35d8d0"]
+      },
+      {
+        title: "AirDraw Nine",
+        category: "Creative AI",
+        url: "https://airdraw-nine-tan.vercel.app/",
+        description: "A second air drawing concept with a warm visual identity and gesture-powered creative flow.",
+        tags: ["Drawing", "Gesture", "Prototype"],
+        accent: ["#d6a15f", "#ff7e67"]
+      },
+      {
+        title: "EcoVerse",
+        category: "Environment",
+        url: "https://ecoverse-chi.vercel.app/",
+        description: "A climate and environment concept space designed around exploration, care, and future-facing visuals.",
+        tags: ["EcoVerse", "Climate", "Story"],
+        accent: ["#b7f35a", "#5ea8ff"]
+      },
+      {
+        title: "3D Crystals",
+        category: "3D",
+        url: "https://3d-crystals.vercel.app/",
+        description: "A crystalline 3D web scene focused on motion, light, geometry, and immersive visual presentation.",
+        tags: ["3D", "Geometry", "WebGL"],
+        accent: ["#9a7bff", "#ffc857"]
+      },
+      {
+        title: "Earth Guardian",
+        category: "Environment",
+        url: "https://earth-guardian-one.vercel.app/",
+        description: "A guardian-style environmental showcase with a strong mission feel and planet-centered storytelling.",
+        tags: ["Earth", "Sustainability", "Impact"],
+        accent: ["#35d8d0", "#7adf88"]
+      },
+      {
+        title: "Solar System",
+        category: "3D",
+        url: "https://solar-system-deploy-gamma.vercel.app/",
+        description: "A space exploration project that presents planets, orbital motion, and cosmic scale in the browser.",
+        tags: ["Space", "3D", "Planets"],
+        accent: ["#5ea8ff", "#ffcf5a"]
+      },
+      {
+        title: "Skyway",
+        category: "Mobility",
+        url: "https://skyway-umber.vercel.app/",
+        description: "A future mobility web concept with sky-focused direction, movement, and transport-like energy.",
+        tags: ["Mobility", "Future", "Transport"],
+        accent: ["#70c7ff", "#ffb15a"]
+      }
+    ];
+
+    const categories = ["All", ...new Set(projects.map((project) => project.category))];
+    const gallery = document.querySelector("#gallery");
+    const filters = document.querySelector("#filters");
+    const searchInput = document.querySelector("#searchInput");
+    const emptyState = document.querySelector("#emptyState");
+    const projectCount = document.querySelector("#projectCount");
+    let activeCategory = "All";
+
+    projectCount.textContent = projects.length;
+
+    function hostname(url) {
+      return new URL(url).hostname;
+    }
+
+    function renderFilters() {
+      filters.innerHTML = categories
+        .map((category) => (
+          `<button class="filter-button${category === activeCategory ? " active" : ""}" type="button" data-category="${category}">${category}</button>`
+        ))
+        .join("");
+    }
+
+    function renderProjects() {
+      const term = searchInput.value.trim().toLowerCase();
+      const filtered = projects.filter((project) => {
+        const haystack = `${project.title} ${project.category} ${project.description} ${project.tags.join(" ")}`.toLowerCase();
+        return (activeCategory === "All" || project.category === activeCategory) && haystack.includes(term);
+      });
+
+      gallery.querySelectorAll(".project-card").forEach((card) => card.remove());
+
+      const cards = filtered.map((project, index) => {
+        const initial = project.title.match(/[A-Z0-9]/i)?.[0]?.toUpperCase() || "O";
+        return `
+          <article
+            class="project-card"
+            style="--accent-a: ${project.accent[0]}; --accent-b: ${project.accent[1]}; animation-delay: ${index * 45}ms"
+            data-title="${project.title}"
+          >
+            <div class="preview" data-initial="${initial}">
+              <iframe
+                title="${project.title} live preview"
+                src="${project.url}"
+                loading="lazy"
+                referrerpolicy="no-referrer"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                allow="fullscreen"
+              ></iframe>
+              <span class="preview-shine" aria-hidden="true"></span>
+            </div>
+            <div class="card-body">
+              <div class="card-topline">
+                <span>${project.category}</span>
+                <span class="status-dot" aria-hidden="true"></span>
+              </div>
+              <h3>${project.title}</h3>
+              <p>${project.description}</p>
+              <div class="tags">
+                ${project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+              </div>
+              <div class="card-footer">
+                <span class="domain">${hostname(project.url)}</span>
+                <a class="launch" href="${project.url}" target="_blank" rel="noopener" aria-label="Open ${project.title}">&rarr;</a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      emptyState.insertAdjacentHTML("beforebegin", cards);
+      emptyState.classList.toggle("show", filtered.length === 0);
+      attachTilt();
+    }
+
+    function attachTilt() {
+      document.querySelectorAll(".project-card").forEach((card) => {
+        card.addEventListener("pointermove", (event) => {
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
+          card.style.setProperty("--rx", `${y * -4}deg`);
+          card.style.setProperty("--ry", `${x * 5}deg`);
+        });
+
+        card.addEventListener("pointerleave", () => {
+          card.style.setProperty("--rx", "0deg");
+          card.style.setProperty("--ry", "0deg");
+        });
+      });
+    }
+
+    filters.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-category]");
+      if (!button) {
+        return;
+      }
+      activeCategory = button.dataset.category;
+      renderFilters();
+      renderProjects();
+    });
+
+    searchInput.addEventListener("input", renderProjects);
+
+    renderFilters();
+    renderProjects();
+
+    const canvas = document.querySelector("#neuralCanvas");
+    const ctx = canvas.getContext("2d");
+    const pointer = { x: 0, y: 0 };
+    let width = 0;
+    let height = 0;
+    let particles = [];
+
+    function resizeCanvas() {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      particles = Array.from({ length: Math.min(90, Math.floor(width / 16)) }, (_, index) => ({
+        angle: index * 0.42,
+        orbit: 70 + Math.random() * Math.max(width, height) * 0.56,
+        depth: Math.random() * 260,
+        speed: 0.0015 + Math.random() * 0.0028,
+        color: ["#35d8d0", "#ff7e67", "#ffc857", "#5ea8ff", "#b7f35a"][index % 5]
+      }));
+    }
+
+    function drawNetwork(time) {
+      ctx.clearRect(0, 0, width, height);
+      const centerX = width * 0.52 + pointer.x * 18;
+      const centerY = height * 0.44 + pointer.y * 14;
+
+      const projected = particles.map((particle) => {
+        const angle = particle.angle + time * particle.speed;
+        const z = Math.sin(angle * 0.8) * particle.depth;
+        const scale = 420 / (420 + z);
+        const x = centerX + Math.cos(angle) * particle.orbit * scale;
+        const y = centerY + Math.sin(angle * 0.72) * particle.orbit * 0.34 * scale;
+        return { x, y, scale, color: particle.color };
+      });
+
+      for (let i = 0; i < projected.length; i += 1) {
+        for (let j = i + 1; j < projected.length; j += 1) {
+          const a = projected[i];
+          const b = projected[j];
+          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+          if (distance < 130) {
+            ctx.strokeStyle = `rgba(23, 32, 50, ${0.11 * (1 - distance / 130)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      projected.forEach((point) => {
+        ctx.fillStyle = point.color;
+        ctx.globalAlpha = 0.2 + point.scale * 0.32;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 1.5 + point.scale * 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(drawNetwork);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("pointermove", (event) => {
+      pointer.x = event.clientX / window.innerWidth - 0.5;
+      pointer.y = event.clientY / window.innerHeight - 0.5;
+    });
+
+    resizeCanvas();
+    requestAnimationFrame(drawNetwork);
+  </script>
+</body>
+</html>
